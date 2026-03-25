@@ -42,12 +42,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Convert file to Buffer
+    // Convert file to Uint8Array (Node.js Buffer compatible)
     const arrayBuffer = await file.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
+    const uint8Array = new Uint8Array(arrayBuffer);
 
     // Call remove.bg API
-    const resultBase64 = await removeBackgroundFromImage(buffer, apiKey);
+    const resultBase64 = await removeBackgroundFromImage(uint8Array, apiKey);
 
     return NextResponse.json({
       success: true,

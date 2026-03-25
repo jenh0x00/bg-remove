@@ -3,32 +3,24 @@
 
 const REMOVE_BG_API_URL = 'https://api.remove.bg/v1.0/removebg';
 
-export interface RemoveBgResponse {
-  data?: {
-    result_url: string;
-    result_base64: string;
-  };
-  errors?: Array<{
-    code: string;
-    detail: string;
-  }>;
-}
-
 export interface RemoveBgError {
   code: string;
   detail: string;
 }
 
 export async function removeBackgroundFromImage(
-  imageBuffer: Buffer,
+  imageData: Buffer | Uint8Array,
   apiKey: string
 ): Promise<string> {
   const formData = new FormData();
-  formData.append(
-    'image_file',
-    new Blob([imageBuffer]),
-    'image.png'
-  );
+  
+  // Convert to a plain ArrayBuffer that Blob accepts
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const blobData = Buffer.isBuffer(imageData)
+    ? imageData
+    : Buffer.from(imageData);
+    
+  formData.append('image_file', new Blob([blobData as any]), 'image.png');
   formData.append('size', 'auto');
   formData.append('format', 'png');
 
