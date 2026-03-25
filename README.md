@@ -1,8 +1,8 @@
 # BGRemover
 
-> Free online image background remover tool for ecommerce sellers
+> Free online image background remover for ecommerce sellers
 
-![Next.js](https://img.shields.io/badge/Next.js-15-black)
+![Next.js](https://img.shields.io/badge/Next.js-16-black)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-38bdf8)
 
@@ -10,15 +10,15 @@ Remove image backgrounds instantly and for free. Perfect for ecommerce product p
 
 ## Features
 
-- 🚀 **Instant Processing** - Remove backgrounds in 2-3 seconds
-- 💰 **100% Free** - No signup required
-- 📦 **Ecommerce Ready** - Perfect for Amazon, Shopify product photos
-- 🎨 **High Quality** - Preserves edges and details
-- 📱 **Responsive** - Works on desktop and mobile
+- 🚀 **Instant Processing** — Remove backgrounds in 2-3 seconds
+- 💰 **100% Free** — No signup required
+- 📦 **Ecommerce Ready** — Perfect for Amazon, Shopify product photos
+- 🎨 **High Quality** — AI-powered edge detection
+- 📱 **Responsive** — Works on desktop and mobile
 
 ## Tech Stack
 
-- **Framework**: Next.js 15 (App Router)
+- **Framework**: Next.js 16 (App Router)
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS 4
 - **Background Removal**: remove.bg API
@@ -37,8 +37,8 @@ Remove image backgrounds instantly and for free. Perfect for ecommerce product p
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/jenh0x00/image-background-remover.git
-cd image-background-remover
+git clone https://github.com/jenh0x00/bg-remove.git
+cd bg-remove
 ```
 
 2. Install dependencies:
@@ -47,7 +47,7 @@ cd image-background-remover
 npm install
 ```
 
-3. Copy the environment variables example:
+3. Copy the environment variables template:
 
 ```bash
 cp .env.local.example .env.local
@@ -82,37 +82,36 @@ npm run dev
    - **Output directory**: `.next`
 5. Add environment variable:
    - `REMOVE_BG_API_KEY`: your API key
+6. Deploy
 
 ## Project Structure
 
 ```
-image-background-remover/
+bg-remove/
 ├── src/
 │   ├── app/
-│   │   ├── api/
-│   │   │   └── remove-background/
-│   │   │       └── route.ts      # API endpoint
-│   │   ├── about/
-│   │   │   └── page.tsx
+│   │   ├── api/remove-background/route.ts   # API endpoint
+│   │   ├── about/page.tsx
 │   │   ├── blog/
-│   │   │   └── page.tsx
-│   │   ├── terms/
-│   │   │   └── page.tsx
+│   │   │   ├── page.tsx                     # Blog listing
+│   │   │   └── [slug]/page.tsx             # Blog posts
+│   │   ├── terms/page.tsx
 │   │   ├── globals.css
 │   │   ├── layout.tsx
-│   │   └── page.tsx              # Home page with tool
+│   │   ├── page.tsx                         # Home page (tool)
+│   │   ├── robots.ts
+│   │   └── sitemap.ts
 │   ├── components/
-│   │   ├── HomeClient.tsx         # Client-side home logic
-│   │   ├── ImageUploader.tsx      # Drag & drop upload
-│   │   ├── ProcessingStatus.tsx   # Loading/error states
-│   │   └── ResultView.tsx        # Before/after display
+│   │   ├── HomeClient.tsx                  # Client-side home logic
+│   │   ├── ImageUploader.tsx                # Drag & drop upload
+│   │   ├── ProcessingStatus.tsx             # Loading/error states
+│   │   └── ResultView.tsx                  # Before/after display
 │   └── lib/
-│       └── remove-bg.ts          # remove.bg API client
+│       └── remove-bg.ts                     # remove.bg API client
 ├── public/
 ├── .env.local.example
 ├── next.config.ts
 ├── package.json
-├── tailwind.config.ts
 └── tsconfig.json
 ```
 
@@ -152,8 +151,8 @@ This project is built with SEO in mind:
 - Semantic HTML with proper heading hierarchy
 - Meta tags for all pages (title, description, keywords)
 - OpenGraph and Twitter Card meta tags
-- Structured data ready
-- Sitemap configuration ready for Google Search Console
+- Structured sitemap.xml and robots.txt
+- 5 SEO-focused blog articles
 
 ### SEO Keywords
 
@@ -163,6 +162,22 @@ The site targets these keyword clusters:
 - **Ecommerce**: `product photo background`, `ecommerce background remover`
 - **Platform**: `amazon product photos`, `shopify background remover`
 - **Intent**: `white background maker`, `transparent background maker`
+
+## Development
+
+```bash
+# Run development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Run production server
+npm start
+
+# Lint
+npm run lint
+```
 
 ## License
 

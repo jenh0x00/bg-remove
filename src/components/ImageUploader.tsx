@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useId } from 'react';
 
 type ProcessingStatus = 'idle' | 'uploading' | 'processing' | 'success' | 'error';
 
@@ -16,6 +16,7 @@ export default function ImageUploader({ onResult, onStatusChange }: ImageUploade
   const [isDragging, setIsDragging] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const inputId = useId();
 
   const validateFile = (file: File): string | null => {
     if (!ALLOWED_TYPES.includes(file.type)) {
@@ -34,13 +35,11 @@ export default function ImageUploader({ onResult, onStatusChange }: ImageUploade
       return;
     }
 
-    // Create preview URL
     const objectUrl = URL.createObjectURL(file);
     setPreviewUrl(objectUrl);
     onStatusChange('uploading');
 
     try {
-      // Send to API
       const formData = new FormData();
       formData.append('image', file);
 
@@ -62,10 +61,7 @@ export default function ImageUploader({ onResult, onStatusChange }: ImageUploade
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Something went wrong. Please try again.';
       onStatusChange('error', errorMessage);
-      // Clean up preview URL on error
-      if (objectUrl) {
-        URL.revokeObjectURL(objectUrl);
-      }
+      URL.revokeObjectURL(objectUrl);
       setPreviewUrl(null);
     }
   }, [onResult, onStatusChange]);
@@ -84,22 +80,14 @@ export default function ImageUploader({ onResult, onStatusChange }: ImageUploade
     e.preventDefault();
     setIsDragging(false);
 
-    const file = e.dataTransfer.files[0];
-    if (file) {
-      processFile(file);
-    }
+    const file = e.dataTransfer.files?.[0];
+    if (file) processFile(file);
   }, [processFile]);
 
   const handleFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      processFile(file);
-    }
+    if (file) processFile(file);
   }, [processFile]);
-
-  const handleClick = () => {
-    fileInputRef.current?.click();
-  };
 
   const handleReset = () => {
     setPreviewUrl(null);
@@ -111,30 +99,32 @@ export default function ImageUploader({ onResult, onStatusChange }: ImageUploade
 
   return (
     <div className="w-full">
+      {/* Hidden file input accessible via label */}
       <input
+        id={inputId}
         ref={fileInputRef}
         type="file"
         accept="image/jpeg,image/png,image/webp"
         onChange={handleFileSelect}
-        className="hidden"
+        className="sr-only"
       />
 
       {!previewUrl ? (
-        <div
-          onClick={handleClick}
+        <label
+          htmlFor={inputId}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
           className={`
-            relative border-2 border-dashed rounded-2xl p-12 text-center cursor-pointer
-            transition-all duration-200
+            relative block border-2 border-dashed rounded-2xl p-12 text-center cursor-pointer
+            transition-all duration-200 select-none
             ${isDragging
               ? 'border-blue-500 bg-blue-50'
               : 'border-gray-300 hover:border-blue-400 hover:bg-gray-50'
             }
           `}
         >
-          <div className="flex flex-col items-center gap-4">
+          <div className="flex flex-col items-center gap-4 pointer-events-none">
             <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center">
               <svg
                 className="w-8 h-8 text-blue-500"
@@ -152,29 +142,28 @@ export default function ImageUploader({ onResult, onStatusChange }: ImageUploade
             </div>
             <div>
               <p className="text-lg font-medium text-gray-700">
-                Drop your image here, or <span className="text-blue-500">browse</span>
+                Drop your image here, or <span className="text-blue-500 underline underline-offset-2">browse</span>
               </p>
               <p className="text-sm text-gray-500 mt-1">
                 Supports JPG, PNG, WebP • Max 12MB
               </p>
             </div>
           </div>
-        </div>
+        </label>
       ) : (
         <div className="flex flex-col items-center gap-4">
-          {previewUrl && (
-            <div className="relative">
-              <img
-                src={previewUrl}
-                alt="Original"
-                className="max-h-64 rounded-lg shadow-md"
-              />
-              <span className="absolute top-2 left-2 bg-black/60 text-white text-xs px-2 py-1 rounded">
-                Original
-              </span>
-            </div>
-          )}
+          <div className="relative">
+            <img
+              src={previewUrl}
+              alt="Original"
+              className="max-h-64 rounded-lg shadow-md"
+            />
+            <span className="absolute top-2 left-2 bg-black/60 text-white text-xs px-2 py-1 rounded">
+              Original
+            </span>
+          </div>
           <button
+            type="button"
             onClick={handleReset}
             className="text-sm text-gray-500 hover:text-gray-700 underline"
           >
