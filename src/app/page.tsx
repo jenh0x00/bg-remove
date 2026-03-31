@@ -1,7 +1,5 @@
-import ImageUploader from '@/components/ImageUploader';
-import ResultView from '@/components/ResultView';
-import ProcessingStatus from '@/components/ProcessingStatus';
 import HomeClient from '@/components/HomeClient';
+import AuthButton from '@/components/auth-button';
 
 // Force dynamic rendering - this page uses API routes
 export const dynamic = 'force-dynamic';
@@ -20,14 +18,17 @@ export default function Home() {
             </div>
             <span className="font-semibold text-gray-900">BGRemover</span>
           </div>
-          <nav className="flex items-center gap-6">
-            <a href="/blog" className="text-sm text-gray-600 hover:text-gray-900 transition-colors">
-              Blog
-            </a>
-            <a href="/about" className="text-sm text-gray-600 hover:text-gray-900 transition-colors">
-              About
-            </a>
-          </nav>
+          <div className="flex items-center gap-4">
+            <nav className="flex items-center gap-6">
+              <a href="/blog" className="text-sm text-gray-600 hover:text-gray-900 transition-colors">
+                Blog
+              </a>
+              <a href="/about" className="text-sm text-gray-600 hover:text-gray-900 transition-colors">
+                About
+              </a>
+            </nav>
+            <AuthButton />
+          </div>
         </div>
       </header>
 

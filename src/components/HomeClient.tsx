@@ -30,7 +30,6 @@ export default function HomeClient() {
   const handleDownload = useCallback(() => {
     if (!resultUrl) return;
 
-    // Create a temporary link to download the base64 image
     const link = document.createElement('a');
     link.href = resultUrl;
     link.download = 'background-removed.png';
@@ -48,29 +47,16 @@ export default function HomeClient() {
 
   return (
     <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 md:p-8">
-      {/* Upload Area */}
-      <ImageUploader
-        onResult={handleResult}
-        onStatusChange={handleStatusChange}
-      />
+      <ImageUploader onResult={handleResult} onStatusChange={handleStatusChange} />
 
-      {/* Processing Status */}
-      {(status === 'uploading' || status === 'processing') && (
-        <ProcessingStatus status={status} />
-      )}
+      {(status === 'uploading' || status === 'processing') && <ProcessingStatus status={status} />}
 
-      {/* Error State */}
       {status === 'error' && (
         <ProcessingStatus status="error" error={error} onRetry={handleRetry} />
       )}
 
-      {/* Result */}
       {status === 'success' && resultUrl && originalUrl && (
-        <ResultView
-          resultUrl={resultUrl}
-          originalUrl={originalUrl}
-          onDownload={handleDownload}
-        />
+        <ResultView resultUrl={resultUrl} originalUrl={originalUrl} onDownload={handleDownload} />
       )}
     </div>
   );
