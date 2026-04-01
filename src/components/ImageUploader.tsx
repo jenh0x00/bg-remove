@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useCallback, useId } from 'react';
+import { useState, useRef, useCallback } from 'react';
 
 type ProcessingStatus = 'idle' | 'uploading' | 'processing' | 'success' | 'error';
 
@@ -16,7 +16,6 @@ export default function ImageUploader({ onResult, onStatusChange }: ImageUploade
   const [isDragging, setIsDragging] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const inputId = useId();
 
   const validateFile = (file: File): string | null => {
     if (!ALLOWED_TYPES.includes(file.type)) {
@@ -79,7 +78,6 @@ export default function ImageUploader({ onResult, onStatusChange }: ImageUploade
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
-
     const file = e.dataTransfer.files?.[0];
     if (file) processFile(file);
   }, [processFile]);
@@ -88,6 +86,10 @@ export default function ImageUploader({ onResult, onStatusChange }: ImageUploade
     const file = e.target.files?.[0];
     if (file) processFile(file);
   }, [processFile]);
+
+  const handleBrowseClick = useCallback(() => {
+    fileInputRef.current?.click();
+  }, []);
 
   const handleReset = () => {
     setPreviewUrl(null);
@@ -99,32 +101,31 @@ export default function ImageUploader({ onResult, onStatusChange }: ImageUploade
 
   return (
     <div className="w-full">
-      {/* Hidden file input accessible via label */}
+      {/* Always-visible file input */}
       <input
-        id={inputId}
         ref={fileInputRef}
         type="file"
         accept="image/jpeg,image/png,image/webp"
         onChange={handleFileSelect}
-        className="sr-only"
+        className="hidden"
       />
 
       {!previewUrl ? (
-        <label
-          htmlFor={inputId}
-          onDragOver={handleDragOver}
-          onDragLeave={handleDragLeave}
-          onDrop={handleDrop}
+        <div
           className={`
-            relative block border-2 border-dashed rounded-2xl p-12 text-center cursor-pointer
-            transition-all duration-200 select-none
+            border-2 border-dashed rounded-2xl p-12 text-center cursor-pointer select-none
+            transition-all duration-200
             ${isDragging
               ? 'border-blue-500 bg-blue-50'
               : 'border-gray-300 hover:border-blue-400 hover:bg-gray-50'
             }
           `}
+          onClick={handleBrowseClick}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
         >
-          <div className="flex flex-col items-center gap-4 pointer-events-none">
+          <div className="flex flex-col items-center gap-4">
             <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center">
               <svg
                 className="w-8 h-8 text-blue-500"
@@ -149,7 +150,7 @@ export default function ImageUploader({ onResult, onStatusChange }: ImageUploade
               </p>
             </div>
           </div>
-        </label>
+        </div>
       ) : (
         <div className="flex flex-col items-center gap-4">
           <div className="relative">

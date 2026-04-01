@@ -17,12 +17,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async jwt({ token, profile }) {
       if (profile) {
         token.picture = profile.picture;
+        token.sub = profile.sub; // Google user ID
       }
       return token;
     },
     async session({ session, token }) {
       if (session.user) {
         session.user.image = token.picture as string | null | undefined;
+        // @ts-expect-error sub is not in default User type but we need it
+        session.user.id = token.sub as string;
       }
       return session;
     },

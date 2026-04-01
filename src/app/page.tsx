@@ -1,5 +1,6 @@
 import HomeClient from '@/components/HomeClient';
 import AuthButton from '@/components/auth-button';
+import PricingSection from '@/components/pricing-section';
 
 // Force dynamic rendering - this page uses API routes
 export const dynamic = 'force-dynamic';
@@ -20,6 +21,9 @@ export default function Home() {
           </div>
           <div className="flex items-center gap-4">
             <nav className="flex items-center gap-6">
+              <a href="/#pricing" className="text-sm text-gray-600 hover:text-gray-900 transition-colors">
+                Pricing
+              </a>
               <a href="/blog" className="text-sm text-gray-600 hover:text-gray-900 transition-colors">
                 Blog
               </a>
@@ -40,14 +44,28 @@ export default function Home() {
             <span className="text-blue-500"> Free & Instant</span>
           </h1>
           <p className="mt-4 text-lg text-gray-600 max-w-xl mx-auto">
-            Upload any image and get a transparent or white background in seconds. 
+            Upload any image and get a transparent or white background in seconds.
             Perfect for ecommerce product photos, designed for sellers.
           </p>
+          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
+            <a
+              href="#tool"
+              className="px-6 py-3 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              Start Free — No Signup
+            </a>
+            <a
+              href="/#pricing"
+              className="px-6 py-3 border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors"
+            >
+              See Pricing
+            </a>
+          </div>
         </div>
       </section>
 
       {/* Tool Section */}
-      <section className="pb-16">
+      <section className="pb-16" id="tool">
         <div className="max-w-2xl mx-auto px-4">
           <HomeClient />
         </div>
@@ -134,38 +152,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* FAQ */}
-      <section className="py-16">
-        <div className="max-w-2xl mx-auto px-4">
-          <h2 className="text-2xl font-bold text-gray-900 text-center mb-12">Frequently Asked Questions</h2>
-          <div className="space-y-6">
-            <div>
-              <h3 className="font-medium text-gray-900">Is it really free?</h3>
-              <p className="mt-1 text-sm text-gray-600">Yes, you can remove backgrounds from images for free. Each image is processed using our API credits.</p>
-            </div>
-            <div>
-              <h3 className="font-medium text-gray-900">What image formats are supported?</h3>
-              <p className="mt-1 text-sm text-gray-600">We support JPG, PNG, and WebP images up to 12MB in size.</p>
-            </div>
-            <div>
-              <h3 className="font-medium text-gray-900">What happens to my images?</h3>
-              <p className="mt-1 text-sm text-gray-600">Your images are processed and returned immediately. We don't store your images on our servers.</p>
-            </div>
-            <div>
-              <h3 className="font-medium text-gray-900">Can I use it for commercial purposes?</h3>
-              <p className="mt-1 text-sm text-gray-600">Yes, images you process are yours to use for any commercial or personal project.</p>
-            </div>
-            <div>
-              <h3 className="font-medium text-gray-900">How long does it take?</h3>
-              <p className="mt-1 text-sm text-gray-600">Most images are processed in 2-3 seconds. Larger images may take a bit longer.</p>
-            </div>
-            <div>
-              <h3 className="font-medium text-gray-900">Do I need to create an account?</h3>
-              <p className="mt-1 text-sm text-gray-600">No signup required. Just upload your image and get results instantly.</p>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Pricing Section */}
+      <PricingSection />
 
       {/* Footer */}
       <footer className="border-t border-gray-100 py-8">

@@ -2,13 +2,10 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   typescript: {
-    // Skip type checking during build - handles Node.js version differences
     ignoreBuildErrors: true,
   },
-  eslint: {
-    // Skip ESLint during build
-    ignoreDuringBuilds: true,
-  },
+  // Allow localtunnel subdomains for development
+  allowedDevOrigins: ['loca.lt', 'loca.ly'],
 };
 
 export default nextConfig;
